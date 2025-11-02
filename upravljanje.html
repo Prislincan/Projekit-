@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Šolski portal - Upravljanje</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Šolski Portal</h1>
+            <p>Upravljanje predmetov</p>
+        </header>
+        
+        <nav class="main-nav">
+            <a href="ucenec.html" class="nav-link">🏠 Domača stran</a>
+            <a href="gradiva.html" class="nav-link">📖 Gradiva</a>
+            <a href="oddaja-nalog.html" class="nav-link">📤 Oddaja nalog</a>
+            <a href="upravljanje.html" class="nav-link active">⚙️ Upravljanje</a>
+        </nav>
+        
+        <main>
+            <div class="card">
+                <h2>Upravljanje predmetov</h2>
+                <p>Tukaj lahko dodajate ali odstranjate predmete iz svojega seznama.</p>
+                
+                <div class="form-group">
+                    <label for="newSubject">Dodaj nov predmet:</label>
+                    <input type="text" id="newSubject" class="form-input" placeholder="Vnesite ime predmeta">
+                    <button id="addSubject" class="btn btn-success" style="margin-top: 10px;">➕ Dodaj predmet</button>
+                </div>
+                
+                <h3>Moji predmeti</h3>
+                <div id="manageSubjectList" class="subject-list">
+                    <!-- Predmeti za upravljanje -->
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <footer>
+        <p>Šolski portal &copy; 2023</p>
+    </footer>
+
+    <script>
+        // Globalni podatki
+        window.userSubjects = JSON.parse(localStorage.getItem('userSubjects')) || 
+            ["Matematika", "Slovenščina", "Angleščina", "Zgodovina", "Fizika"];
+
+        window.userData = JSON.parse(localStorage.getItem('userData')) || { 
+            firstName: "Janez", 
+            lastName: "Novak" 
+        };
+
+        window.subjectMaterials = JSON.parse(localStorage.getItem('subjectMaterials')) || {
+            "Matematika": ["Algebra.pdf", "Geometrija.docx", "Naloge.zip"],
+            "Slovenščina": ["Bralna lista.pdf", "Pravopis.docx"],
+            "Angleščina": ["Grammar.pdf", "Vocabulary.docx"],
+            "Zgodovina": ["Srednji vek.pdf", "Renesansa.pptx"],
+            "Fizika": ["Mehanika.pdf", "Optika.docx"]
+        };
+
+        // Funkcije za delo s predmeti
+        function addSubject(newSubject) {
+            if (!newSubject.trim()) {
+                alert('Prosimo, vnesite ime predmeta!');
+                return false;
+            }
+            
+            if (window.userSubjects.includes(newSubject)) {
+                alert('Ta predmet že obstaja na vašem seznamu!');
+                return false;
+            }
+            
+            window.userSubjects.push(newSubject);
+            window.subjectMaterials[newSubject] = [];
+            
+            // Shrani v localStorage
+            localStorage.setItem('userSubjects', JSON.stringify(window.userSubjects));
+            localStorage.setItem('subjectMaterials', JSON.stringify(window.subjectMaterials));
+            
+            return true;
+        }
+
+        function removeSubject(subject) {
+            // Odstrani predmet iz seznama
+            window.userSubjects = window.userSubjects.filter(s => s !== subject);
+            
+            // Odstrani gradiva predmeta
+            delete window.subjectMaterials[subject];
+            
+            // Shrani v localStorage
+            localStorage.setItem('userSubjects', JSON.stringify(window.userSubjects));
+            localStorage.setItem('subjectMaterials', JSON.stringify(window.subjectMaterials));
+            
+            return true;
+        }
+
+        function loadManageSubjects() {
+            const manageList = document.getElementById('manageSubjectList');
+            if (!manageList) return;
+            
+            manageList.innerHTML = '';
+            
+            if (window.userSubjects.length === 0) {
+                manageList.innerHTML = `
+                    <div class="subject-item" style="text-align: center; padding: 2rem;">
+                        <h3>📚 Ni predmetov</h3>
+                        <p>Dodajte prvi predmet z zgornjim obrazcem.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            window.userSubjects.forEach(subject => {
+                manageList.innerHTML += `
+                    <div class="subject-item">
+                        <h3>${subject}</h3>
+                        <p>Gradiva: ${window.subjectMaterials[subject]?.length || 0}</p>
+                        <button class="btn btn-danger btn-sm" onclick="removeSubjectAndReload('${subject}')">
+                            🗑️ Odstrani
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        // Funkcija za odstranjevanje s potrditvijo
+        function removeSubjectAndReload(subject) {
+            if (!confirm(`Ali ste prepričani, da želite odstraniti predmet "${subject}"?\n\nVSE gradiva tega predmeta bodo izgubljena!`)) {
+                return;
+            }
+            
+            if (removeSubject(subject)) {
+                loadManageSubjects();
+                alert(`🗑️ Predmet "${subject}" je bil uspešno odstranjen.`);
+            }
+        }
+
+        // Inicializacija
+        document.addEventListener('DOMContentLoaded', function() {
+            loadManageSubjects();
+            
+            // Dodajanje novega predmeta
+            document.getElementById('addSubject').addEventListener('click', function() {
+                const input = document.getElementById('newSubject');
+                const subject = input.value.trim();
+                
+                if (addSubject(subject)) {
+                    input.value = '';
+                    loadManageSubjects();
+                    alert(`✅ Predmet "${subject}" je bil uspešno dodan!`);
+                }
+            });
+
+            // Dodaj tudi na Enter tipko
+            document.getElementById('newSubject').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('addSubject').click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

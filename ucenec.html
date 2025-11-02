@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Šolski portal - Upravljanje</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navigation.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Šolski Portal</h1>
+            <p>Upravljanje predmetov in oddaja nalog</p>
+        </header>
+        
+        <nav class="main-nav">
+            <a href="ucenec.html" class="nav-link active">🏠 Domača stran</a>
+            <a href="gradiva.html" class="nav-link">📖 Gradiva</a>
+            <a href="oddaja-nalog.html" class="nav-link">📤 Oddaja nalog</a>
+            <a href="upravljanje.html" class="nav-link">⚙️ Upravljanje</a>
+        </nav>
+        
+        <main>
+            <div class="card">
+                <h2>Moji predmeti</h2>
+                <p>Spodaj so prikazani vsi predmeti, ki jih obiskujete.</p>
+                
+                <div class="subject-list" id="subjectList">
+                    <!-- Predmeti se nalagajo s JavaScript -->
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <footer>
+        <p>Šolski portal &copy; 2023</p>
+    </footer>
+
+    <script src="subjects.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSubjects();
+        });
+    </script>
+</body>
+</html>

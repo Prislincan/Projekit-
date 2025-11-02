@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Šolski portal - Upravljanje</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navigation.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Šolski Portal</h1>
+            <p>Gradiva predmetov</p>
+        </header>
+        
+        <nav class="main-nav">
+            <a href="ucenec.html" class="nav-link">🏠 Domača stran</a>
+            <a href="gradiva.html" class="nav-link active">📖 Gradiva</a>
+            <a href="oddaja-nalog.html" class="nav-link">📤 Oddaja nalog</a>
+            <a href="upravljanje.html" class="nav-link">⚙️ Upravljanje</a>
+        </nav>
+        
+        <main>
+            <div class="card">
+                <h2>Gradiva predmeta</h2>
+                
+                <div class="form-group">
+                    <label for="subjectSelect">Izberite predmet:</label>
+                    <select id="subjectSelect" class="form-select">
+                        <option value="">-- Izberite predmet --</option>
+                    </select>
+                </div>
+                
+                <div id="materialsContent">
+                    <p>Izberite predmet za ogled gradiv.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <footer>
+        <p>Šolski portal &copy; 2023</p>
+    </footer>
+
+    <script src="js/subjects.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSubjectSelect();
+            
+            document.getElementById('subjectSelect').addEventListener('change', function() {
+                showMaterials(this.value);
+            });
+        });
+        
+        function showMaterials(subject) {
+            const content = document.getElementById('materialsContent');
+            
+            if (!subject) {
+                content.innerHTML = '<p>Izberite predmet za ogled gradiv.</p>';
+                return;
+            }
+            
+            const materials = window.subjectMaterials[subject] || [];
+            
+            if (materials.length === 0) {
+                content.innerHTML = `<p>Za predmet <strong>${subject}</strong> trenutno ni gradiv.</p>`;
+                return;
+            }
+            
+            let html = `<h3>Gradiva za: ${subject}</h3><ul class="material-list">`;
+            materials.forEach(material => {
+                html += `<li>📄 ${material}</li>`;
+            });
+            html += '</ul>';
+            content.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

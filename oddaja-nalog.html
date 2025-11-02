@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Šolski portal - Upravljanje</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navigation.css">
+<head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎓 Šolski Portal</h1>
+            <p>Oddaja nalog</p>
+        </header>
+        
+        <nav class="main-nav">
+            <a href="ucenec.html" class="nav-link">🏠 Domača stran</a>
+            <a href="gradiva.html" class="nav-link">📖 Gradiva</a>
+            <a href="oddaja-nalog.html" class="nav-link active">📤 Oddaja nalog</a>
+            <a href="upravljanje.html" class="nav-link">⚙️ Upravljanje</a>
+        </nav>
+        
+        <main>
+            <div class="card">
+                <h2>Oddaja naloge</h2>
+                <p>Izpolnite obrazec za oddajo naloge.</p>
+                
+                <form id="assignmentForm">
+                    <div class="form-group">
+                        <label for="subject">Predmet:</label>
+                        <select id="subject" class="form-select" required>
+                            <option value="">-- Izberite predmet --</option>
+                            <option value="matematika">Matematika</option>
+                            <option value="slovenscina">Slovenščina</option>
+                            <option value="anglescina">Angleščina</option>
+                            <option value="zgodovina">Zgodovina</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="title">Naslov naloge:</label>
+                        <input type="text" id="title" class="form-input" placeholder="Vnesite naslov naloge" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="file">Izberite datoteko:</label>
+                        <input type="file" id="file" class="form-input" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">📤 Oddaj nalogo</button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Zgodovina oddanih nalog -->
+            <div class="card">
+                <h3>Zgodovina oddanih nalog</h3>
+                <div id="assignmentHistory">
+                    <p>Še niste oddali nobene naloge.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <footer>
+        <p>Šolski portal &copy; 2023</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('assignmentForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const subject = document.getElementById('subject').value;
+                const title = document.getElementById('title').value;
+                const file = document.getElementById('file').files[0];
+                
+                if (!subject || !title || !file) {
+                    alert('Prosimo, izpolnite vsa polja!');
+                    return;
+                }
+                
+                const fileName = `Naloga - ${title}.${file.name.split('.').pop()}`;
+                
+                alert(`Naloga oddana!\n\nPredmet: ${subject}\nNaslov: ${title}\nDatoteka: ${fileName}`);
+                
+                // Ponastavi obrazec
+                this.reset();
+            });
+        });
+    </script>
+</body>
+</html>
