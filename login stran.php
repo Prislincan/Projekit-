@@ -29,7 +29,7 @@
 
     .right-side {
       flex: 1;
-      background: url('slike/slika_prijavna_stran.jpg') no-repeat center center/cover;
+      background: url('slika_prijavna_stran.jpg') no-repeat center center/cover;
     }
 
     h2 {
