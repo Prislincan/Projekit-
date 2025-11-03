@@ -98,10 +98,9 @@ $result = $conn->query($sql);
 <link rel="stylesheet" href="style.css">
 <style>
 body {
-    font-family: 'Inter', Arial, sans-serif;
     background: linear-gradient(135deg, #6366f1, #7c3aed);
     margin: 0;
-    padding: 40px 0;
+    padding: 20px;
     color: #1f2937;
 }
 
